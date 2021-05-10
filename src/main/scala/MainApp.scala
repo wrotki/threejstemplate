@@ -2,6 +2,7 @@ import scala.scalajs.js.JSApp
 import org.scalajs.dom
 import dom.{console, document, window}
 import threejs.BoxGeometry
+import scala.scalajs.js
 
 object MainApp extends JSApp {
 
@@ -9,18 +10,28 @@ object MainApp extends JSApp {
     println("Starting 'threejstemplate'...")
 
     val scene = new threejs.Scene
+    js.Dynamic.global.scene = scene
     console.log(s"Scene: $scene")
-    var camera = new threejs.PerspectiveCamera(75f, (window.innerWidth/window.innerHeight).toFloat, 0.1f, 1000f)
+
+    val camera = new threejs.PerspectiveCamera(75f, (window.innerWidth/window.innerHeight).toFloat, 0.1f, 1000f)
+    camera.position.z = 4
+    js.Dynamic.global.camera = camera
     console.log(s"PerspectiveCamera: $camera")
+
     val renderer = new threejs.WebGLRenderer(threejs.WebGLRendererParameters(antialias = true))
-    renderer.setClearColor("#000000", 0.0f)
+    renderer.setClearColor("#000000", 1.0f)
     renderer.setSize( window.innerWidth.toFloat, window.innerHeight.toFloat)
+    js.Dynamic.global.renderer = renderer
     console.log(s"WebGLRenderer: $renderer")
+
     document.body.appendChild( renderer.domElement )
 
     val geometry = new BoxGeometry(1,1,1,1,1,1)
+    js.Dynamic.global.geometry = geometry
     val material = new threejs.MeshBasicMaterial( threejs.MeshBasicMaterialParameters(color = "#433F81") )
+    js.Dynamic.global.material = material
     val cube = new threejs.Mesh( geometry, material )
+    js.Dynamic.global.cube = cube
     scene.add(cube)
 
     lazy val render: (Double) => _ = (_: Double) => {
@@ -30,6 +41,7 @@ object MainApp extends JSApp {
       cube.rotation.y = cube.rotation.y + 0.01f
 
       renderer.render(scene, camera)
+//      console.log(s"Rendered")
     }
 
     val p = document.createElement("p")
@@ -37,7 +49,7 @@ object MainApp extends JSApp {
     p.appendChild(text)
     document.body.appendChild(p)
 
-    render(0.0)
+    render(0.1)
   }
 
 }

@@ -17,10 +17,14 @@ object WebGLRendererParameters {
 }
 
 @js.native
-@JSGlobal("THREE.WebGLRenderer")
-class WebGLRenderer(parameters: js.Object) extends js.Object {
+trait WebGLRendererInterface extends js.Object {
   def setClearColor(color: String, alpha: Float): Unit = js.native
   def setSize(width: Float, height: Float): Unit = js.native
   val domElement: Element = js.native
   def render(scene: Scene, camera: PerspectiveCamera): Unit = js.native
+}
+
+@js.native
+@JSGlobal("THREE.WebGLRenderer")
+class WebGLRenderer(parameters: js.Object) extends WebGLRendererInterface {
 }

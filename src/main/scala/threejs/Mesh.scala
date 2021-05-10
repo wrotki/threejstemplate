@@ -10,6 +10,13 @@ trait RotationParameters extends js.Object {
   var z: Float = js.native
 }
 
+@js.native
+trait PositionParameters extends js.Object {
+  var x: Float = js.native
+  var y: Float = js.native
+  var z: Float = js.native
+}
+
 object RotationParameters {
   def apply(x: Float, y: Float, z: Float): RotationParameters =
     js.Dynamic.literal(x = x, y = y, z = z).asInstanceOf[RotationParameters]
